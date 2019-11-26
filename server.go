@@ -8,6 +8,7 @@ import (
 	"github.com/ilyakaznacheev/roster/internal/handlers"
 	"github.com/ilyakaznacheev/roster/internal/restapi"
 	"github.com/ilyakaznacheev/roster/internal/restapi/operations"
+	"github.com/ilyakaznacheev/roster/internal/restapi/operations/auth"
 	"github.com/ilyakaznacheev/roster/internal/restapi/operations/roster"
 )
 
@@ -18,35 +19,26 @@ func Run(cfg config.Application) error {
 		return err
 	}
 
+	// setup external services and dependencies
 	mgoDB, err := database.NewMongoHandler(cfg.Database.MongoURI)
 	if err != nil {
 		return err
 	}
-
 	rh := handlers.NewRosterHandler(mgoDB)
+	ah := handlers.NewAuthHandler()
 
 	api := operations.NewRosterAPI(swaggerSpec)
 
+	// routing
 	api.RosterGetRostersHandler = roster.GetRostersHandlerFunc(rh.GetRosterAll)
 	api.RosterGetRostersIDHandler = roster.GetRostersIDHandlerFunc(rh.GetRosterOne)
+	api.AuthPostLoginHandler = auth.PostLoginHandlerFunc(ah.HandleLogin)
 
 	server := restapi.NewServer(api)
 	defer server.Shutdown()
 
 	server.Port = cfg.Server.Port
 	server.Host = cfg.Server.Host
-
-	// type Config struct {
-	// 	MongoURI string `long:"mongo-uri" description:"MongoDB connection URI" env:"MONGO_URI"`
-	// }
-	// var c Config
-
-	// if _, err := flags.Parse(server); err != nil {
-	// 	return nil
-	// }
-	// if _, err := flags.Parse(&c); err != nil {
-	// 	return nil
-	// }
 
 	// server.ConfigureFlags()
 	// server.ConfigureAPI()
