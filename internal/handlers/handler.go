@@ -6,12 +6,30 @@ import (
 	"github.com/ilyakaznacheev/roster/internal/restapi/operations/roster"
 )
 
-type RosterHandler struct {
+type DatabaseService interface {
 }
 
-func (h *RosterHandler) GetRoster(params roster.GetRosterParams) middleware.Responder {
+type RosterHandler struct {
+	DB DatabaseService
+}
+
+// NewRosterHandler creates a new web API handler
+func NewRosterHandler(db DatabaseService) *RosterHandler {
+	return &RosterHandler{
+		DB: db,
+	}
+}
+
+func (h *RosterHandler) GetRosterAll(params roster.GetRostersParams) middleware.Responder {
 
 	respData := models.AllRosters{}
 
-	return roster.NewGetRosterOK().WithPayload(respData)
+	return roster.NewGetRostersOK().WithPayload(respData)
+}
+
+func (h *RosterHandler) GetRosterOne(params roster.GetRostersIDParams) middleware.Responder {
+
+	respData := &models.Roster{}
+
+	return roster.NewGetRostersIDOK().WithPayload(respData)
 }

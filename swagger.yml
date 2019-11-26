@@ -37,9 +37,9 @@ paths:
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 500, "error": {"text": "internal server error"}}
+            application/json: { "code": 500, "message": {"text": "internal server error"}}
 
-  /roster:
+  /rosters:
     get:
       tags:
         - roster
@@ -57,9 +57,9 @@ paths:
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 500, "error": {"text": "internal server error"}}
+            application/json: { "code": 500, "message": {"text": "internal server error"}}
 
-  /roster/{rosterid}:
+  /rosters/{id}:
     get:
       tags:
         - roster
@@ -68,7 +68,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: rosterid
+        - name: id
           in: path
           required: true
           type: string
@@ -82,15 +82,15 @@ paths:
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 404, "error": {"text": "not found"}}
+            application/json: { "code": 404, "message": {"text": "not found"}}
         500:
           description: internal server error
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 500, "error": {"text": "internal server error"}}
+            application/json: { "code": 500, "message": {"text": "internal server error"}}
 
-  /roster/{rosterid}/active:
+  /rosters/{id}/active:
     get:
       tags:
         - roster
@@ -99,7 +99,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: rosterid
+        - name: id
           in: path
           required: true
           type: string
@@ -113,15 +113,15 @@ paths:
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 404, "error": {"text": "not found"}}
+            application/json: { "code": 404, "message": {"text": "not found"}}
         500:
           description: internal server error
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 500, "error": {"text": "internal server error"}}
+            application/json: { "code": 500, "message": {"text": "internal server error"}}
 
-  /roster/{rosterid}/benched:
+  /rosters/{id}/benched:
     get:
       tags:
         - roster
@@ -130,7 +130,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: rosterid
+        - name: id
           in: path
           required: true
           type: string
@@ -144,15 +144,15 @@ paths:
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 404, "error": {"text": "not found"}}
+            application/json: { "code": 404, "message": {"text": "not found"}}
         500:
           description: internal server error
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 500, "error": {"text": "internal server error"}}
+            application/json: { "code": 500, "message": {"text": "internal server error"}}
 
-  /roster/{rosterid}/add_player:
+  /rosters/{id}/add_player:
     post:
       tags:
         - player
@@ -165,7 +165,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: rosterid
+        - name: id
           in: path
           required: true
           type: string
@@ -185,21 +185,21 @@ paths:
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 403, "error": {"text": "forbidden"}}
+            application/json: { "code": 403, "message": {"text": "forbidden"}}
         404:
           description: not found
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 404, "error": {"text": "not found"}}
+            application/json: { "code": 404, "message": {"text": "not found"}}
         500:
           description: internal server error
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 500, "error": {"text": "internal server error"}}
+            application/json: { "code": 500, "message": {"text": "internal server error"}}
 
-  /roster/{rosterid}/rearrange:
+  /rosters/{id}/rearrange:
     post:
       tags:
         - player
@@ -212,7 +212,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: rosterid
+        - name: id
           in: path
           required: true
           type: string
@@ -232,109 +232,19 @@ paths:
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 403, "error": {"text": "forbidden"}}
+            application/json: { "code": 403, "message": {"text": "forbidden"}}
         404:
           description: not found
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 404, "error": {"text": "not found"}}
+            application/json: { "code": 404, "message": {"text": "not found"}}
         500:
           description: internal server error
           schema:
             $ref: "#/definitions/Error"
           examples:
-            application/json: { "code": 500, "error": {"text": "internal server error"}}
-
-#  /roster/{rosterid}/player/{playerid}/to_active:
-#    post:
-#      tags:
-#        - player
-#      summary: Move a player to active
-#      description: Moves a player to active group
-#      security:
-#        - Bearer: []
-#      produces:
-#        - application/json
-#      parameters:
-#        - name: rosterid
-#          in: path
-#          required: true
-#          type: string
-#          description: Roster ID
-#        - name: playerid
-#          in: path
-#          required: true
-#          type: string
-#          description: Player ID
-#      responses:
-#        200:
-#          description: successful operation
-#          schema:
-#            $ref: "#/definitions/Roster"
-#        403:
-#          description: forbidden
-#          schema:
-#            $ref: "#/definitions/Error"
-#          examples:
-#            application/json: { "code": 403, "error": {"text": "forbidden"}}
-#        404:
-#          description: not found
-#          schema:
-#            $ref: "#/definitions/Error"
-#          examples:
-#            application/json: { "code": 404, "error": {"text": "not found"}}
-#        500:
-#          description: internal server error
-#          schema:
-#            $ref: "#/definitions/Error"
-#          examples:
-#            application/json: { "code": 500, "error": {"text": "internal server error"}}
-#
-#  /roster/{rosterid}/player/{playerid}/to_bench:
-#    post:
-#      tags:
-#        - player
-#      summary: Move a player to benched
-#      description: Moves a player to benched group
-#      security:
-#        - Bearer: []
-#      produces:
-#        - application/json
-#      parameters:
-#        - name: rosterid
-#          in: path
-#          required: true
-#          type: string
-#          description: Roster ID
-#        - name: playerid
-#          in: path
-#          required: true
-#          type: string
-#          description: Player ID
-#      responses:
-#        200:
-#          description: successful operation
-#          schema:
-#            $ref: "#/definitions/Roster"
-#        403:
-#          description: forbidden
-#          schema:
-#            $ref: "#/definitions/Error"
-#          examples:
-#            application/json: { "code": 403, "error": {"text": "forbidden"}}
-#        404:
-#          description: not found
-#          schema:
-#            $ref: "#/definitions/Error"
-#          examples:
-#            application/json: { "code": 404, "error": {"text": "not found"}}
-#        500:
-#          description: internal server error
-#          schema:
-#            $ref: "#/definitions/Error"
-#          examples:
-#            application/json: { "code": 500, "error": {"text": "internal server error"}}
+            application/json: { "code": 500, "message": {"text": "internal server error"}}
 
 
 definitions:
@@ -413,24 +323,12 @@ definitions:
     type: object
     required:
       - code
-      - error
+      - message
     properties:
       code:
         type: integer
-      error:
-        $ref: "#/definitions/ErrorMessage"
-
-  ErrorMessage:
-    type: object
-    required:
-      - text
-    properties:
-      text:
+      message:
         type: string
-      details:
-        type: array
-        items:
-          type: string
 
   AuthToken:
     type: object
