@@ -3,8 +3,8 @@ package handlers
 import (
 	"github.com/go-openapi/runtime/middleware"
 
-	"github.com/ilyakaznacheev/roster/internal/models"
-	"github.com/ilyakaznacheev/roster/internal/restapi/operations/auth"
+	"github.com/ilyakaznacheev/roster/internal/api/models"
+	"github.com/ilyakaznacheev/roster/internal/api/restapi/operations/auth"
 )
 
 type AuthHandler struct {

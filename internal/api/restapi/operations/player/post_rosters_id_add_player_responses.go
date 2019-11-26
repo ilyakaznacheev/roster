@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	models "github.com/ilyakaznacheev/roster/internal/models"
+	models "github.com/ilyakaznacheev/roster/internal/api/models"
 )
 
 // PostRostersIDAddPlayerCreatedCode is the HTTP code returned for type PostRostersIDAddPlayerCreated

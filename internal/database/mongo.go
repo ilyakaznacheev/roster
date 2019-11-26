@@ -5,9 +5,13 @@ import (
 	"log"
 
 	"github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
+
+	"github.com/ilyakaznacheev/roster/internal/database/models"
 )
 
 const databaseName = "roster"
+const entityRoster = "roster"
 
 type MongoHandler struct {
 	mgd *mgo.Database
@@ -33,4 +37,32 @@ func NewMongoHandler(conURI string) (*MongoHandler, error) {
 	}
 	return &mh, nil
 
+}
+
+func (h *MongoHandler) GetAllRosters() ([]models.Roster, error) {
+	var res []models.Roster
+	err := h.mgd.C(entityRoster).Find(bson.M{}).All(&res)
+	return res, err
+}
+func (h *MongoHandler) GetRoster(id int) (*models.Roster, error) {
+	var res *models.Roster
+	err := h.mgd.C(entityRoster).Find(bson.M{"id": id}).One(res)
+	if err == mgo.ErrNotFound {
+		return res, NewNotFoundError(err)
+	}
+	return res, err
+}
+func (h *MongoHandler) UpdateRoster(r models.Roster) error {
+	var res *models.Roster
+	err := h.mgd.C(entityRoster).Find(bson.M{"id": r.ID}).One(res)
+	if err == mgo.ErrNotFound {
+		return NewNotFoundError(err)
+	} else if err != nil {
+		return err
+	}
+
+	h.mgd.C(entityRoster).
+		h.mgd.C(entityRoster).UpsertId(r.ID)
+
+	return nil
 }

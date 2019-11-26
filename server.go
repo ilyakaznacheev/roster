@@ -1,15 +1,18 @@
 package roster
 
 import (
+	"log"
+
 	"github.com/go-openapi/loads"
 
+	"github.com/ilyakaznacheev/roster/internal/api/restapi"
+	"github.com/ilyakaznacheev/roster/internal/api/restapi/operations"
+	"github.com/ilyakaznacheev/roster/internal/api/restapi/operations/auth"
+	"github.com/ilyakaznacheev/roster/internal/api/restapi/operations/player"
+	"github.com/ilyakaznacheev/roster/internal/api/restapi/operations/roster"
 	"github.com/ilyakaznacheev/roster/internal/config"
 	"github.com/ilyakaznacheev/roster/internal/database"
 	"github.com/ilyakaznacheev/roster/internal/handlers"
-	"github.com/ilyakaznacheev/roster/internal/restapi"
-	"github.com/ilyakaznacheev/roster/internal/restapi/operations"
-	"github.com/ilyakaznacheev/roster/internal/restapi/operations/auth"
-	"github.com/ilyakaznacheev/roster/internal/restapi/operations/roster"
 )
 
 // Run starts the server
@@ -30,9 +33,15 @@ func Run(cfg config.Application) error {
 	api := operations.NewRosterAPI(swaggerSpec)
 
 	// routing
+	api.AuthPostLoginHandler = auth.PostLoginHandlerFunc(ah.HandleLogin)
 	api.RosterGetRostersHandler = roster.GetRostersHandlerFunc(rh.GetRosterAll)
 	api.RosterGetRostersIDHandler = roster.GetRostersIDHandlerFunc(rh.GetRosterOne)
-	api.AuthPostLoginHandler = auth.PostLoginHandlerFunc(ah.HandleLogin)
+	api.RosterGetRostersIDActiveHandler = roster.GetRostersIDActiveHandlerFunc(rh.GetRosterActive)
+	api.RosterGetRostersIDBenchedHandler = roster.GetRostersIDBenchedHandlerFunc(rh.GetRosterBenched)
+	api.PlayerPostRostersIDAddPlayerHandler = player.PostRostersIDAddPlayerHandlerFunc(rh.AddPayer)
+	api.PlayerPostRostersIDRearrangeHandler = player.PostRostersIDRearrangeHandlerFunc(rh.RearrangeRoster)
+
+	api.Logger = log.Printf
 
 	server := restapi.NewServer(api)
 	defer server.Shutdown()

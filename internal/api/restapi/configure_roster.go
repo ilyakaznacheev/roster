@@ -10,13 +10,13 @@ import (
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
 
-	"github.com/ilyakaznacheev/roster/internal/restapi/operations"
-	"github.com/ilyakaznacheev/roster/internal/restapi/operations/auth"
-	"github.com/ilyakaznacheev/roster/internal/restapi/operations/player"
-	"github.com/ilyakaznacheev/roster/internal/restapi/operations/roster"
+	"github.com/ilyakaznacheev/roster/internal/api/restapi/operations"
+	"github.com/ilyakaznacheev/roster/internal/api/restapi/operations/auth"
+	"github.com/ilyakaznacheev/roster/internal/api/restapi/operations/player"
+	"github.com/ilyakaznacheev/roster/internal/api/restapi/operations/roster"
 )
 
-//go:generate swagger generate server --target ../../internal --name Roster --spec ../../swagger.yml --exclude-main
+//go:generate swagger generate server --target ../../api --name Roster --spec ../../../swagger.yml --exclude-main
 
 func configureFlags(api *operations.RosterAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }

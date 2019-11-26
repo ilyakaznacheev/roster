@@ -19,9 +19,9 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/ilyakaznacheev/roster/internal/restapi/operations/auth"
-	"github.com/ilyakaznacheev/roster/internal/restapi/operations/player"
-	"github.com/ilyakaznacheev/roster/internal/restapi/operations/roster"
+	"github.com/ilyakaznacheev/roster/internal/api/restapi/operations/auth"
+	"github.com/ilyakaznacheev/roster/internal/api/restapi/operations/player"
+	"github.com/ilyakaznacheev/roster/internal/api/restapi/operations/roster"
 )
 
 // NewRosterAPI creates a new Roster instance
