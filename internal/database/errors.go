@@ -20,3 +20,6 @@ func (e *NotFoundError) Unwrap() error {
 func (e *NotFoundError) Error() string {
 	return e.Text
 }
+
+// ErrNotFound not found
+var ErrNotFound *NotFoundError

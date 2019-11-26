@@ -14,7 +14,7 @@ const databaseName = "roster"
 const entityRoster = "roster"
 
 type MongoHandler struct {
-	mgd *mgo.Database
+	db *mgo.Database
 }
 
 // NewMongoHandler connects to a MongoDB and creates database handler
@@ -33,7 +33,7 @@ func NewMongoHandler(conURI string) (*MongoHandler, error) {
 	log.Printf("MongoDB connection established")
 
 	mh := MongoHandler{
-		mgd: session.DB(databaseName),
+		db: session.DB(databaseName),
 	}
 	return &mh, nil
 
@@ -41,28 +41,43 @@ func NewMongoHandler(conURI string) (*MongoHandler, error) {
 
 func (h *MongoHandler) GetAllRosters() ([]models.Roster, error) {
 	var res []models.Roster
-	err := h.mgd.C(entityRoster).Find(bson.M{}).All(&res)
+	err := h.db.C(entityRoster).Find(bson.M{}).All(&res)
 	return res, err
 }
-func (h *MongoHandler) GetRoster(id int) (*models.Roster, error) {
-	var res *models.Roster
-	err := h.mgd.C(entityRoster).Find(bson.M{"id": id}).One(res)
+func (h *MongoHandler) GetRoster(id int64) (*models.Roster, error) {
+	var res models.Roster
+	err := h.db.C(entityRoster).FindId(id).One(&res)
 	if err == mgo.ErrNotFound {
-		return res, NewNotFoundError(err)
+		return nil, NewNotFoundError(err)
 	}
-	return res, err
+	return &res, err
 }
 func (h *MongoHandler) UpdateRoster(r models.Roster) error {
-	var res *models.Roster
-	err := h.mgd.C(entityRoster).Find(bson.M{"id": r.ID}).One(res)
+	id := r.ID
+	version := r.Version
+	r.Version++
+
+	err := h.db.C(entityRoster).Update(
+		bson.M{"_id": id, "version": version},
+		r,
+	)
 	if err == mgo.ErrNotFound {
 		return NewNotFoundError(err)
-	} else if err != nil {
-		return err
 	}
+	return err
+}
 
-	h.mgd.C(entityRoster).
-		h.mgd.C(entityRoster).UpsertId(r.ID)
+func (h *MongoHandler) PushPlayer(id int64, p models.Player) error {
 
-	return nil
+	err := h.db.C(entityRoster).Update(
+		bson.M{"_id": id},
+		bson.M{
+			"$inc":  bson.M{"version": 1},
+			"$push": bson.M{"players.benched": p},
+		},
+	)
+	if err == mgo.ErrNotFound {
+		return NewNotFoundError(err)
+	}
+	return err
 }

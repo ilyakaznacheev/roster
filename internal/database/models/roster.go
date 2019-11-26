@@ -7,7 +7,7 @@ import (
 
 // Roster is a roster document structure
 type Roster struct {
-	ID      int64 `json:"_id"`
+	ID      int64 `bson:"_id"`
 	Players struct {
 		Active  []Player
 		Benched []Player
@@ -18,14 +18,14 @@ type Roster struct {
 
 // Player is a single player inside a roster
 type Player struct {
-	ID        int64
-	FirstName string
-	LastName  string
-	Alias     string
+	ID        int64  `bson:"id"`
+	FirstName string `bson:"first_name"`
+	LastName  string `bson:"last_name"`
+	Alias     string `bson:"alias"`
 }
 
 var maxID = int(math.Pow10(18))
 
-func GenerateID() int {
-	return rand.Intn(maxID)
+func GenerateID() int64 {
+	return int64(rand.Intn(maxID))
 }

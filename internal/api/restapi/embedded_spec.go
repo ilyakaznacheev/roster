@@ -106,7 +106,7 @@ func init() {
         "summary": "Get a roster",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
             "name": "id",
             "in": "path",
             "required": true
@@ -162,7 +162,7 @@ func init() {
         "summary": "Get a roster with active players only",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
             "name": "id",
             "in": "path",
             "required": true
@@ -226,7 +226,7 @@ func init() {
         "summary": "Add a new player",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
             "name": "id",
             "in": "path",
             "required": true
@@ -305,7 +305,7 @@ func init() {
         "summary": "Get a roster with benched players only",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
             "name": "id",
             "in": "path",
             "required": true
@@ -369,7 +369,7 @@ func init() {
         "summary": "Rearrange players",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
             "name": "id",
             "in": "path",
             "required": true
@@ -389,6 +389,20 @@ func init() {
             "description": "successful operation",
             "schema": {
               "$ref": "#/definitions/Roster"
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "examples": {
+              "application/json": {
+                "code": 400,
+                "message": {
+                  "text": "bad request"
+                }
+              }
             }
           },
           "403": {
@@ -673,7 +687,7 @@ func init() {
         "summary": "Get a roster",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
             "name": "id",
             "in": "path",
             "required": true
@@ -729,7 +743,7 @@ func init() {
         "summary": "Get a roster with active players only",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
             "name": "id",
             "in": "path",
             "required": true
@@ -793,7 +807,7 @@ func init() {
         "summary": "Add a new player",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
             "name": "id",
             "in": "path",
             "required": true
@@ -872,7 +886,7 @@ func init() {
         "summary": "Get a roster with benched players only",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
             "name": "id",
             "in": "path",
             "required": true
@@ -936,7 +950,7 @@ func init() {
         "summary": "Rearrange players",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
             "name": "id",
             "in": "path",
             "required": true
@@ -956,6 +970,20 @@ func init() {
             "description": "successful operation",
             "schema": {
               "$ref": "#/definitions/Roster"
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "examples": {
+              "application/json": {
+                "code": 400,
+                "message": {
+                  "text": "bad request"
+                }
+              }
             }
           },
           "403": {

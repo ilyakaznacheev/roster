@@ -10,11 +10,13 @@ import (
 	"net/url"
 	golangswaggerpaths "path"
 	"strings"
+
+	"github.com/go-openapi/swag"
 )
 
 // PostRostersIDAddPlayerURL generates an URL for the post rosters ID add player operation
 type PostRostersIDAddPlayerURL struct {
-	ID string
+	ID int64
 
 	_basePath string
 	// avoid unkeyed usage
@@ -42,7 +44,7 @@ func (o *PostRostersIDAddPlayerURL) Build() (*url.URL, error) {
 
 	var _path = "/rosters/{id}/add_player"
 
-	id := o.ID
+	id := swag.FormatInt64(o.ID)
 	if id != "" {
 		_path = strings.Replace(_path, "{id}", id, -1)
 	} else {

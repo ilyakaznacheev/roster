@@ -57,6 +57,50 @@ func (o *PostRostersIDRearrangeOK) WriteResponse(rw http.ResponseWriter, produce
 	}
 }
 
+// PostRostersIDRearrangeBadRequestCode is the HTTP code returned for type PostRostersIDRearrangeBadRequest
+const PostRostersIDRearrangeBadRequestCode int = 400
+
+/*PostRostersIDRearrangeBadRequest bad request
+
+swagger:response postRostersIdRearrangeBadRequest
+*/
+type PostRostersIDRearrangeBadRequest struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewPostRostersIDRearrangeBadRequest creates PostRostersIDRearrangeBadRequest with default headers values
+func NewPostRostersIDRearrangeBadRequest() *PostRostersIDRearrangeBadRequest {
+
+	return &PostRostersIDRearrangeBadRequest{}
+}
+
+// WithPayload adds the payload to the post rosters Id rearrange bad request response
+func (o *PostRostersIDRearrangeBadRequest) WithPayload(payload *models.Error) *PostRostersIDRearrangeBadRequest {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the post rosters Id rearrange bad request response
+func (o *PostRostersIDRearrangeBadRequest) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *PostRostersIDRearrangeBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(400)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
 // PostRostersIDRearrangeForbiddenCode is the HTTP code returned for type PostRostersIDRearrangeForbidden
 const PostRostersIDRearrangeForbiddenCode int = 403
 
