@@ -14,5 +14,6 @@ require (
 	github.com/go-openapi/validate v0.19.5
 	github.com/ilyakaznacheev/cleanenv v1.1.1
 	github.com/jessevdk/go-flags v1.4.0
+	github.com/stretchr/testify v1.4.0
 	golang.org/x/net v0.0.0-20191125084936-ffdde1057850
 )

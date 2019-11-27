@@ -291,10 +291,12 @@ definitions:
     properties:
       active:
         type: array
+        x-omitempty: true
         items:
           $ref: "#/definitions/Player"
       benched:
         type: array
+        x-omitempty: true
         items:
           $ref: "#/definitions/Player"
 

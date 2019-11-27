@@ -611,13 +611,15 @@ func init() {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Player"
-          }
+          },
+          "x-omitempty": true
         },
         "benched": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Player"
-          }
+          },
+          "x-omitempty": true
         }
       }
     }
@@ -1238,13 +1240,15 @@ func init() {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Player"
-          }
+          },
+          "x-omitempty": true
         },
         "benched": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Player"
-          }
+          },
+          "x-omitempty": true
         }
       }
     }

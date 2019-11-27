@@ -19,19 +19,27 @@ import (
 type DatabaseService interface {
 	GetAllRosters() ([]dbModels.Roster, error)
 	GetRoster(id int64) (*dbModels.Roster, error)
-	UpdateRoster(dbModels.Roster) error
 	PushPlayer(id int64, p dbModels.Player) error
+	UpdateRoster(dbModels.Roster) error
+}
+
+type IDGeneratorFunc func() int64
+
+func (g IDGeneratorFunc) Generate() int64 {
+	return g()
 }
 
 // RosterHandler is a handler for roster API requests
 type RosterHandler struct {
-	DB DatabaseService
+	DB    DatabaseService
+	IDGen IDGeneratorFunc
 }
 
 // NewRosterHandler creates a new web API handler
 func NewRosterHandler(db DatabaseService) *RosterHandler {
 	return &RosterHandler{
-		DB: db,
+		DB:    db,
+		IDGen: dbModels.GenerateID,
 	}
 }
 
@@ -178,7 +186,7 @@ func (h *RosterHandler) GetRosterBenched(params roster.GetRostersIDBenchedParams
 // AddPayer adds a player to the roster
 func (h *RosterHandler) AddPayer(params player.PostRostersIDAddPlayerParams, _ interface{}) middleware.Responder {
 	p := dbModels.Player{
-		ID:        dbModels.GenerateID(),
+		ID:        h.IDGen.Generate(),
 		FirstName: *params.Body.FirstName,
 		LastName:  *params.Body.LastName,
 		Alias:     *params.Body.Alias,

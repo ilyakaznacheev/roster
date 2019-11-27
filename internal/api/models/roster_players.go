@@ -19,10 +19,10 @@ import (
 type RosterPlayers struct {
 
 	// active
-	Active []*Player `json:"active"`
+	Active []*Player `json:"active,omitempty"`
 
 	// benched
-	Benched []*Player `json:"benched"`
+	Benched []*Player `json:"benched,omitempty"`
 }
 
 // Validate validates this roster players

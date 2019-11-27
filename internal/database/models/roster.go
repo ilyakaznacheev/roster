@@ -8,12 +8,15 @@ import (
 // Roster is a roster document structure
 type Roster struct {
 	ID      int64 `bson:"_id"`
-	Players struct {
-		Active  []Player
-		Benched []Player
-	}
+	Players RosterPlayers
 	// Version is used internally for CAS
 	Version int64
+}
+
+// RosterPlayers is a two sets of players in the same roster: active and benched
+type RosterPlayers struct {
+	Active  []Player
+	Benched []Player
 }
 
 // Player is a single player inside a roster
@@ -26,6 +29,7 @@ type Player struct {
 
 var maxID = int(math.Pow10(18))
 
+// GenerateID creates a random 18-digit ID
 func GenerateID() int64 {
 	return int64(rand.Intn(maxID))
 }
