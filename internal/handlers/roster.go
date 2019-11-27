@@ -15,6 +15,8 @@ import (
 	dbModels "github.com/ilyakaznacheev/roster/internal/database/models"
 )
 
+const activePlayersNumber = 5
+
 // DatabaseService is a abstract database layer interface
 type DatabaseService interface {
 	GetAllRosters() ([]dbModels.Roster, error)
@@ -248,11 +250,16 @@ func (h *RosterHandler) RearrangeRoster(params player.PostRostersIDRearrangePara
 	// read data from the database
 	r, err := h.DB.GetRoster(params.ID)
 	if errors.As(err, &database.ErrNotFound) {
-		return roster.NewGetRostersIDBenchedNotFound().WithPayload(
+		return player.NewPostRostersIDRearrangeNotFound().WithPayload(
 			errorResp(http.StatusNotFound, err.Error()))
 	} else if err != nil {
-		return roster.NewGetRostersIDBenchedInternalServerError().WithPayload(
+		return player.NewPostRostersIDRearrangeInternalServerError().WithPayload(
 			errorResp(http.StatusInternalServerError, err.Error()))
+	}
+
+	if len(r.Players.Active) != activePlayersNumber {
+		return player.NewPostRostersIDRearrangeBadRequest().WithPayload(
+			errorResp(http.StatusBadRequest, fmt.Sprintf("bad roster: the initial amount of active players is %d", len(r.Players.Active))))
 	}
 
 	// process the change
@@ -288,10 +295,10 @@ func (h *RosterHandler) RearrangeRoster(params player.PostRostersIDRearrangePara
 
 	err = h.DB.UpdateRoster(*r)
 	if errors.As(err, &database.ErrNotFound) {
-		return roster.NewGetRostersIDBenchedInternalServerError().WithPayload(
+		return player.NewPostRostersIDRearrangeInternalServerError().WithPayload(
 			errorResp(http.StatusInternalServerError, "data was changed in concurrent process\nplease repeat the request"))
 	} else if err != nil {
-		return roster.NewGetRostersIDBenchedInternalServerError().WithPayload(
+		return player.NewPostRostersIDRearrangeInternalServerError().WithPayload(
 			errorResp(http.StatusInternalServerError, err.Error()))
 	}
 

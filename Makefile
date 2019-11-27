@@ -11,8 +11,16 @@ generate/mocks:
 ## generate: Run full code generation
 generate: generate/swagger generate/mocks
 
-test:
+## test/unit: Runs unit-tests for the project
+test/unit:
 	@go test ./... -covermode=count -timeout=$(TEST_TIMEOUT)
+
+## docker/up: Starts docker infrastructure using docker-compose
+docker/up: docker/down
+	@docker-compose up -d
+
+docker/down:
+	@docker-compose down
 
 ## help: Get makefile manual
 help: Makefile

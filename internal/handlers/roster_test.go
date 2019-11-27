@@ -448,6 +448,30 @@ func TestRosterHandler_RearrangeRoster(t *testing.T) {
 		LastName:  "test22",
 		Alias:     "ttt222",
 	}
+	p3 := dbModels.Player{
+		ID:        33333,
+		FirstName: "test3",
+		LastName:  "test33",
+		Alias:     "ttt333",
+	}
+	p4 := dbModels.Player{
+		ID:        44444,
+		FirstName: "test4",
+		LastName:  "test44",
+		Alias:     "ttt444",
+	}
+	p5 := dbModels.Player{
+		ID:        55555,
+		FirstName: "test5",
+		LastName:  "test5",
+		Alias:     "ttt555",
+	}
+	p6 := dbModels.Player{
+		ID:        66666,
+		FirstName: "test6",
+		LastName:  "test66",
+		Alias:     "ttt666",
+	}
 
 	type mockParams struct {
 		// get roster
@@ -483,7 +507,7 @@ func TestRosterHandler_RearrangeRoster(t *testing.T) {
 
 					ID: 777,
 					Players: dbModels.RosterPlayers{
-						Active:  []dbModels.Player{p1},
+						Active:  []dbModels.Player{p1, p3, p4, p5, p6},
 						Benched: []dbModels.Player{p2},
 					},
 				},
@@ -492,14 +516,14 @@ func TestRosterHandler_RearrangeRoster(t *testing.T) {
 
 					ID: 777,
 					Players: dbModels.RosterPlayers{
-						Active:  []dbModels.Player{p2},
+						Active:  []dbModels.Player{p3, p4, p5, p6, p2},
 						Benched: []dbModels.Player{p1},
 					},
 				},
 				err2: nil,
 			},
 			wantStatus: 200,
-			wantBody:   `{"id":777,"players":{"active":[{"alias":"ttt222","first_name":"test2","id":67890,"last_name":"test22"}],"benched":[{"alias":"ttt111","first_name":"test1","id":12345,"last_name":"test11"}]}}`,
+			wantBody:   `{"id":777,"players":{"active":[{"alias":"ttt333","first_name":"test3","id":33333,"last_name":"test33"},{"alias":"ttt444","first_name":"test4","id":44444,"last_name":"test44"},{"alias":"ttt555","first_name":"test5","id":55555,"last_name":"test5"},{"alias":"ttt666","first_name":"test6","id":66666,"last_name":"test66"},{"alias":"ttt222","first_name":"test2","id":67890,"last_name":"test22"}],"benched":[{"alias":"ttt111","first_name":"test1","id":12345,"last_name":"test11"}]}}`,
 		},
 
 		{
@@ -514,19 +538,17 @@ func TestRosterHandler_RearrangeRoster(t *testing.T) {
 			mockParams: mockParams{
 				id: 777,
 				res: &dbModels.Roster{
-
 					ID: 777,
 					Players: dbModels.RosterPlayers{
-						Active:  []dbModels.Player{p1},
+						Active:  []dbModels.Player{p1, p3, p4, p5, p6},
 						Benched: []dbModels.Player{p2},
 					},
 				},
 				err1: nil,
 				req: dbModels.Roster{
-
 					ID: 777,
 					Players: dbModels.RosterPlayers{
-						Active:  []dbModels.Player{p2},
+						Active:  []dbModels.Player{p3, p4, p5, p6, p2},
 						Benched: []dbModels.Player{p1},
 					},
 				},
@@ -548,19 +570,17 @@ func TestRosterHandler_RearrangeRoster(t *testing.T) {
 			mockParams: mockParams{
 				id: 777,
 				res: &dbModels.Roster{
-
 					ID: 777,
 					Players: dbModels.RosterPlayers{
-						Active:  []dbModels.Player{p1},
+						Active:  []dbModels.Player{p1, p3, p4, p5, p6},
 						Benched: []dbModels.Player{p2},
 					},
 				},
 				err1: nil,
 				req: dbModels.Roster{
-
 					ID: 777,
 					Players: dbModels.RosterPlayers{
-						Active:  []dbModels.Player{p2},
+						Active:  []dbModels.Player{p3, p4, p5, p6, p2},
 						Benched: []dbModels.Player{p1},
 					},
 				},
@@ -582,19 +602,17 @@ func TestRosterHandler_RearrangeRoster(t *testing.T) {
 			mockParams: mockParams{
 				id: 777,
 				res: &dbModels.Roster{
-
 					ID: 777,
 					Players: dbModels.RosterPlayers{
-						Active:  []dbModels.Player{p1},
+						Active:  []dbModels.Player{p1, p3, p4, p5, p6},
 						Benched: []dbModels.Player{p2},
 					},
 				},
 				err1: nil,
 				req: dbModels.Roster{
-
 					ID: 777,
 					Players: dbModels.RosterPlayers{
-						Active:  []dbModels.Player{p2},
+						Active:  []dbModels.Player{p3, p4, p5, p6, p2},
 						Benched: []dbModels.Player{p1},
 					},
 				},
@@ -618,10 +636,9 @@ func TestRosterHandler_RearrangeRoster(t *testing.T) {
 				res:  nil,
 				err1: ErrTestNotFound,
 				req: dbModels.Roster{
-
 					ID: 777,
 					Players: dbModels.RosterPlayers{
-						Active:  []dbModels.Player{p2},
+						Active:  []dbModels.Player{p3, p4, p5, p6, p2},
 						Benched: []dbModels.Player{p1},
 					},
 				},
@@ -645,10 +662,9 @@ func TestRosterHandler_RearrangeRoster(t *testing.T) {
 				res:  nil,
 				err1: ErrTestGeneric,
 				req: dbModels.Roster{
-
 					ID: 777,
 					Players: dbModels.RosterPlayers{
-						Active:  []dbModels.Player{p2},
+						Active:  []dbModels.Player{p3, p4, p5, p6, p2},
 						Benched: []dbModels.Player{p1},
 					},
 				},
@@ -670,19 +686,17 @@ func TestRosterHandler_RearrangeRoster(t *testing.T) {
 			mockParams: mockParams{
 				id: 777,
 				res: &dbModels.Roster{
-
 					ID: 777,
 					Players: dbModels.RosterPlayers{
-						Active:  []dbModels.Player{p1},
+						Active:  []dbModels.Player{p1, p3, p4, p5, p6},
 						Benched: []dbModels.Player{p2},
 					},
 				},
 				err1: nil,
 				req: dbModels.Roster{
-
 					ID: 777,
 					Players: dbModels.RosterPlayers{
-						Active:  []dbModels.Player{p2},
+						Active:  []dbModels.Player{p3, p4, p5, p6, p2},
 						Benched: []dbModels.Player{p1},
 					},
 				},
@@ -704,7 +718,38 @@ func TestRosterHandler_RearrangeRoster(t *testing.T) {
 			mockParams: mockParams{
 				id: 777,
 				res: &dbModels.Roster{
+					ID: 777,
+					Players: dbModels.RosterPlayers{
+						Active:  []dbModels.Player{p1, p3, p4, p5, p6},
+						Benched: []dbModels.Player{p2},
+					},
+				},
+				err1: nil,
+				req: dbModels.Roster{
+					ID: 777,
+					Players: dbModels.RosterPlayers{
+						Active:  []dbModels.Player{p3, p4, p5, p6, p2},
+						Benched: []dbModels.Player{p1},
+					},
+				},
+				err2: ErrTestGeneric,
+			},
+			wantStatus: 500,
+			wantBody:   `{"code":500,"message":"test"}`,
+		},
 
+		{
+			name: "bad roster: active players != 5",
+			params: player.PostRostersIDRearrangeParams{
+				ID: 777,
+				Body: &apiModels.RearrangeRequest{
+					ToActive:  []int64{67890},
+					ToBenched: []int64{12345},
+				},
+			},
+			mockParams: mockParams{
+				id: 777,
+				res: &dbModels.Roster{
 					ID: 777,
 					Players: dbModels.RosterPlayers{
 						Active:  []dbModels.Player{p1},
@@ -713,17 +758,16 @@ func TestRosterHandler_RearrangeRoster(t *testing.T) {
 				},
 				err1: nil,
 				req: dbModels.Roster{
-
 					ID: 777,
 					Players: dbModels.RosterPlayers{
 						Active:  []dbModels.Player{p2},
 						Benched: []dbModels.Player{p1},
 					},
 				},
-				err2: ErrTestGeneric,
+				err2: nil,
 			},
-			wantStatus: 500,
-			wantBody:   `{"code":500,"message":"test"}`,
+			wantStatus: 400,
+			wantBody:   `{"code":400,"message":"bad roster: the initial amount of active players is 1"}`,
 		},
 	}
 	for _, tt := range tests {
