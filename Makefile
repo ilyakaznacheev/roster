@@ -1,5 +1,5 @@
 generate/swagger:
-	@rm -rf ./internal/api/models ./internal/api/restapi #cleanup
+# 	@rm -rf ./internal/api/models ./internal/api/restapi #cleanup
 	@swagger generate server -f swagger.yml -t internal/api --exclude-main -A roster
 
 generate/mocks:

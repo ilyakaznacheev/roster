@@ -28,19 +28,20 @@ func Run(cfg config.Application) error {
 		return err
 	}
 	rh := handlers.NewRosterHandler(mgoDB)
-	ah := handlers.NewAuthHandler()
+	ah := handlers.NewAuthHandler(cfg.Server.AuthKey)
 
 	api := operations.NewRosterAPI(swaggerSpec)
 
 	// routing
-	api.AuthPostLoginHandler = auth.PostLoginHandlerFunc(ah.HandleLogin)
 	api.RosterGetRostersHandler = roster.GetRostersHandlerFunc(rh.GetRosterAll)
 	api.RosterGetRostersIDHandler = roster.GetRostersIDHandlerFunc(rh.GetRosterOne)
 	api.RosterGetRostersIDActiveHandler = roster.GetRostersIDActiveHandlerFunc(rh.GetRosterActive)
 	api.RosterGetRostersIDBenchedHandler = roster.GetRostersIDBenchedHandlerFunc(rh.GetRosterBenched)
 	api.PlayerPostRostersIDAddPlayerHandler = player.PostRostersIDAddPlayerHandlerFunc(rh.AddPayer)
 	api.PlayerPostRostersIDRearrangeHandler = player.PostRostersIDRearrangeHandlerFunc(rh.RearrangeRoster)
+	api.AuthPostLoginHandler = auth.PostLoginHandlerFunc(ah.HandleLogin)
 
+	api.BearerAuth = ah.Authenticate
 	api.Logger = log.Printf
 
 	server := restapi.NewServer(api)
@@ -50,7 +51,8 @@ func Run(cfg config.Application) error {
 	server.Host = cfg.Server.Host
 
 	// server.ConfigureFlags()
-	// server.ConfigureAPI()
+
+	server.ConfigureAPI()
 
 	return server.Serve()
 }

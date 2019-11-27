@@ -4,7 +4,9 @@ package restapi
 
 import (
 	"crypto/tls"
+	"log"
 	"net/http"
+	"time"
 
 	errors "github.com/go-openapi/errors"
 	runtime "github.com/go-openapi/runtime"
@@ -35,11 +37,6 @@ func configureAPI(api *operations.RosterAPI) http.Handler {
 	api.JSONConsumer = runtime.JSONConsumer()
 
 	api.JSONProducer = runtime.JSONProducer()
-
-	// Applies when the "Authorization" header is set
-	api.BearerAuth = func(token string) (interface{}, error) {
-		return nil, errors.NotImplemented("api key auth (Bearer) Authorization from header param [Authorization] has not yet been implemented")
-	}
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()
 	// Expected interface runtime.Authorizer
@@ -108,5 +105,11 @@ func setupMiddlewares(handler http.Handler) http.Handler {
 // The middleware configuration happens before anything, this middleware also applies to serving the swagger.json document.
 // So this is a good place to plug in a panic handling middleware, logging and metrics
 func setupGlobalMiddleware(handler http.Handler) http.Handler {
-	return handler
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		defer func(method, endpoint string, start time.Time) {
+			s := time.Now().Sub(start).Milliseconds()
+			log.Printf("[%s] %s took %dms", method, endpoint, s)
+		}(r.Method, r.URL.Path, time.Now())
+		handler.ServeHTTP(w, r)
+	})
 }

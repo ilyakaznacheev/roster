@@ -32,15 +32,46 @@ func init() {
     "/login": {
       "post": {
         "description": "Returns a JWT token",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "tags": [
           "auth"
         ],
         "summary": "Login",
+        "parameters": [
+          {
+            "description": "Credentials",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthRequest"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
             "schema": {
               "$ref": "#/definitions/AuthToken"
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "examples": {
+              "application/json": {
+                "code": 403,
+                "message": {
+                  "text": "forbidden"
+                }
+              }
             }
           },
           "500": {
@@ -456,6 +487,21 @@ func init() {
       "type": "array",
       "items": {
         "$ref": "#/definitions/Roster"
+      }
+    },
+    "AuthRequest": {
+      "type": "object",
+      "required": [
+        "login",
+        "password"
+      ],
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
       }
     },
     "AuthToken": {
@@ -613,15 +659,46 @@ func init() {
     "/login": {
       "post": {
         "description": "Returns a JWT token",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "tags": [
           "auth"
         ],
         "summary": "Login",
+        "parameters": [
+          {
+            "description": "Credentials",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthRequest"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
             "schema": {
               "$ref": "#/definitions/AuthToken"
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "examples": {
+              "application/json": {
+                "code": 403,
+                "message": {
+                  "text": "forbidden"
+                }
+              }
             }
           },
           "500": {
@@ -1037,6 +1114,21 @@ func init() {
       "type": "array",
       "items": {
         "$ref": "#/definitions/Roster"
+      }
+    },
+    "AuthRequest": {
+      "type": "object",
+      "required": [
+        "login",
+        "password"
+      ],
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
       }
     },
     "AuthToken": {

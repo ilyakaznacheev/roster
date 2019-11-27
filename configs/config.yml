@@ -1,5 +1,6 @@
 server:
   port: 8080
+  auth-key: DUMMY #for local test purposes only
 
 database:
   mongo-uri: mongodb://localhost:27017

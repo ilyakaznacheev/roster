@@ -57,6 +57,50 @@ func (o *PostLoginOK) WriteResponse(rw http.ResponseWriter, producer runtime.Pro
 	}
 }
 
+// PostLoginForbiddenCode is the HTTP code returned for type PostLoginForbidden
+const PostLoginForbiddenCode int = 403
+
+/*PostLoginForbidden forbidden
+
+swagger:response postLoginForbidden
+*/
+type PostLoginForbidden struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewPostLoginForbidden creates PostLoginForbidden with default headers values
+func NewPostLoginForbidden() *PostLoginForbidden {
+
+	return &PostLoginForbidden{}
+}
+
+// WithPayload adds the payload to the post login forbidden response
+func (o *PostLoginForbidden) WithPayload(payload *models.Error) *PostLoginForbidden {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the post login forbidden response
+func (o *PostLoginForbidden) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *PostLoginForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(403)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
 // PostLoginInternalServerErrorCode is the HTTP code returned for type PostLoginInternalServerError
 const PostLoginInternalServerErrorCode int = 500
 

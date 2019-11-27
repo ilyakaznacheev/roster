@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/go-openapi/runtime/middleware"
 
@@ -16,6 +15,7 @@ import (
 	dbModels "github.com/ilyakaznacheev/roster/internal/database/models"
 )
 
+// DatabaseService is a abstract database layer interface
 type DatabaseService interface {
 	GetAllRosters() ([]dbModels.Roster, error)
 	GetRoster(id int64) (*dbModels.Roster, error)
@@ -23,6 +23,7 @@ type DatabaseService interface {
 	PushPlayer(id int64, p dbModels.Player) error
 }
 
+// RosterHandler is a handler for roster API requests
 type RosterHandler struct {
 	DB DatabaseService
 }
@@ -34,9 +35,8 @@ func NewRosterHandler(db DatabaseService) *RosterHandler {
 	}
 }
 
+// GetRosterAll returns a list of all rosters
 func (h *RosterHandler) GetRosterAll(params roster.GetRostersParams) middleware.Responder {
-	defer logRequest("GET", "GetRosterAll", time.Now())
-
 	rosters, err := h.DB.GetAllRosters()
 	if err != nil {
 
@@ -78,9 +78,8 @@ func (h *RosterHandler) GetRosterAll(params roster.GetRostersParams) middleware.
 	return roster.NewGetRostersOK().WithPayload(respData)
 }
 
+// GetRosterOne returns a certain roster
 func (h *RosterHandler) GetRosterOne(params roster.GetRostersIDParams) middleware.Responder {
-	defer logRequest("GET", "GetRosterOne", time.Now())
-
 	r, err := h.DB.GetRoster(params.ID)
 	if errors.As(err, &database.ErrNotFound) {
 		return roster.NewGetRostersIDNotFound().WithPayload(
@@ -118,9 +117,8 @@ func (h *RosterHandler) GetRosterOne(params roster.GetRostersIDParams) middlewar
 	return roster.NewGetRostersIDOK().WithPayload(respData)
 }
 
+// GetRosterActive returns a certain roster with active players
 func (h *RosterHandler) GetRosterActive(params roster.GetRostersIDActiveParams) middleware.Responder {
-	defer logRequest("GET", "GetRosterActive", time.Now())
-
 	r, err := h.DB.GetRoster(params.ID)
 	if errors.As(err, &database.ErrNotFound) {
 		return roster.NewGetRostersIDActiveNotFound().WithPayload(
@@ -148,9 +146,8 @@ func (h *RosterHandler) GetRosterActive(params roster.GetRostersIDActiveParams) 
 	return roster.NewGetRostersIDActiveOK().WithPayload(respData)
 }
 
+// GetRosterBenched returns a certain roster with benched players
 func (h *RosterHandler) GetRosterBenched(params roster.GetRostersIDBenchedParams) middleware.Responder {
-	defer logRequest("GET", "GetRosterBenched", time.Now())
-
 	r, err := h.DB.GetRoster(params.ID)
 	if errors.As(err, &database.ErrNotFound) {
 		return roster.NewGetRostersIDBenchedNotFound().WithPayload(
@@ -178,9 +175,8 @@ func (h *RosterHandler) GetRosterBenched(params roster.GetRostersIDBenchedParams
 	return roster.NewGetRostersIDBenchedOK().WithPayload(respData)
 }
 
+// AddPayer adds a player to the roster
 func (h *RosterHandler) AddPayer(params player.PostRostersIDAddPlayerParams, _ interface{}) middleware.Responder {
-	defer logRequest("POST", "AddPayer", time.Now())
-
 	p := dbModels.Player{
 		ID:        dbModels.GenerateID(),
 		FirstName: *params.Body.FirstName,
@@ -207,9 +203,8 @@ func (h *RosterHandler) AddPayer(params player.PostRostersIDAddPlayerParams, _ i
 	return player.NewPostRostersIDAddPlayerCreated().WithPayload(respData)
 }
 
+// RearrangeRoster rearranges players in a certain roster
 func (h *RosterHandler) RearrangeRoster(params player.PostRostersIDRearrangeParams, _ interface{}) middleware.Responder {
-	defer logRequest("POST", "RearrangeRoster", time.Now())
-
 	// prepare request keys
 	activeKeys := make(map[int64]struct{}, len(params.Body.ToActive))
 	for _, id := range params.Body.ToActive {
@@ -321,15 +316,11 @@ func (h *RosterHandler) RearrangeRoster(params player.PostRostersIDRearrangePara
 	return player.NewPostRostersIDRearrangeOK().WithPayload(respData)
 }
 
+// errorResp response error helper
 func errorResp(status int64, message string) *apiModels.Error {
 	log.Printf("error %d: %s", status, message)
 	return &apiModels.Error{
 		Code:    &status,
 		Message: &message,
 	}
-}
-
-func logRequest(method, endpoint string, start time.Time) {
-	s := time.Now().Sub(start).Milliseconds()
-	log.Printf("[%s] %s took %dms", method, endpoint, s)
 }

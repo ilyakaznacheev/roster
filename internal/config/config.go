@@ -6,8 +6,9 @@ type Application struct {
 }
 
 type Server struct {
-	Port int    `yml:"port" env:"PORT" env-default:"8080" env-description:"server port"`
-	Host string `yml:"host" env:"HOST" env-default:"localhost" env-description:"server host"`
+	Port    int    `yml:"port" env:"PORT" env-default:"8080" env-description:"server port"`
+	Host    string `yml:"host" env:"HOST" env-default:"localhost" env-description:"server host"`
+	AuthKey string `yml:"auth-key" env:"AUTH_KEY" env-description:"authentication signing key"`
 }
 
 type Database struct {
