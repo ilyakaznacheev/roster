@@ -23,7 +23,7 @@ func Run(cfg config.Application) error {
 	}
 
 	// setup external services and dependencies
-	mgoDB, err := database.NewMongoHandler(cfg.Database.MongoURI)
+	mgoDB, err := database.NewMongoHandler(cfg.Database)
 	if err != nil {
 		return err
 	}

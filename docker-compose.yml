@@ -12,7 +12,6 @@ services:
 #      - MONGO_INITDB_ROOT_PASSWORD=roster
       - MONGO_INITDB_DATABASE=roster
     volumes:
-      #      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
       - ./temp/mongodb:/data/db
     command: mongod
 
@@ -24,6 +23,7 @@ services:
     environment:
       - PORT=8080
       - HOST=0.0.0.0
+      - MONGO_TLS=false
       - MONGO_URI=mongodb://mongo:27017
     depends_on:
       - mongo

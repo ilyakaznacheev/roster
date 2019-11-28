@@ -1,12 +1,16 @@
 package database
 
 import (
+	"crypto/tls"
 	"fmt"
 	"log"
+	"net"
+	"time"
 
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 
+	"github.com/ilyakaznacheev/roster/internal/config"
 	"github.com/ilyakaznacheev/roster/internal/database/models"
 )
 
@@ -18,15 +22,29 @@ type MongoHandler struct {
 }
 
 // NewMongoHandler connects to a MongoDB and creates database handler
-func NewMongoHandler(conURI string) (*MongoHandler, error) {
+func NewMongoHandler(cfg config.Database) (*MongoHandler, error) {
 	var (
 		session *mgo.Session
 		err     error
 	)
 
+	dialInfo, err := mgo.ParseURL(cfg.MongoURI)
+	if err != nil {
+		return nil, fmt.Errorf("MongoDB connection error: %w", err)
+	}
+
+	if cfg.MongoTLS {
+		tlsConfig := &tls.Config{}
+		dialInfo.DialServer = func(addr *mgo.ServerAddr) (net.Conn, error) {
+			conn, err := tls.Dial("tcp", addr.String(), tlsConfig)
+			return conn, err
+		}
+	}
+	dialInfo.Timeout = 10 * time.Second
+
 	// try to connect to MongoDB
 	log.Printf("connecting to MongoDB...")
-	session, err = mgo.Dial(conURI)
+	session, err = mgo.DialWithInfo(dialInfo)
 	if err != nil {
 		return nil, fmt.Errorf("MongoDB connection error: %w", err)
 	}

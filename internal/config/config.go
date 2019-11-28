@@ -13,4 +13,5 @@ type Server struct {
 
 type Database struct {
 	MongoURI string `yml:"mongo-uri" env:"MONGO_URI" env-description:"MongoDB connection URI"`
+	MongoTLS bool   `env:"MONGO_TLS"`
 }
