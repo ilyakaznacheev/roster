@@ -15,5 +15,6 @@ require (
 	github.com/ilyakaznacheev/cleanenv v1.1.1
 	github.com/jessevdk/go-flags v1.4.0
 	github.com/stretchr/testify v1.4.0
+	golang.org/x/crypto v0.0.0-20190617133340-57b3e21c3d56
 	golang.org/x/net v0.0.0-20191125084936-ffdde1057850
 )

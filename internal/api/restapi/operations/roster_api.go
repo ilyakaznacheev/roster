@@ -56,6 +56,9 @@ func NewRosterAPI(spec *loads.Document) *RosterAPI {
 		AuthPostLoginHandler: auth.PostLoginHandlerFunc(func(params auth.PostLoginParams) middleware.Responder {
 			return middleware.NotImplemented("operation AuthPostLogin has not yet been implemented")
 		}),
+		AuthPostRegisterHandler: auth.PostRegisterHandlerFunc(func(params auth.PostRegisterParams) middleware.Responder {
+			return middleware.NotImplemented("operation AuthPostRegister has not yet been implemented")
+		}),
 		PlayerPostRostersIDAddPlayerHandler: player.PostRostersIDAddPlayerHandlerFunc(func(params player.PostRostersIDAddPlayerParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation PlayerPostRostersIDAddPlayer has not yet been implemented")
 		}),
@@ -118,6 +121,8 @@ type RosterAPI struct {
 	RosterGetRostersIDBenchedHandler roster.GetRostersIDBenchedHandler
 	// AuthPostLoginHandler sets the operation handler for the post login operation
 	AuthPostLoginHandler auth.PostLoginHandler
+	// AuthPostRegisterHandler sets the operation handler for the post register operation
+	AuthPostRegisterHandler auth.PostRegisterHandler
 	// PlayerPostRostersIDAddPlayerHandler sets the operation handler for the post rosters ID add player operation
 	PlayerPostRostersIDAddPlayerHandler player.PostRostersIDAddPlayerHandler
 	// PlayerPostRostersIDRearrangeHandler sets the operation handler for the post rosters ID rearrange operation
@@ -207,6 +212,10 @@ func (o *RosterAPI) Validate() error {
 
 	if o.AuthPostLoginHandler == nil {
 		unregistered = append(unregistered, "auth.PostLoginHandler")
+	}
+
+	if o.AuthPostRegisterHandler == nil {
+		unregistered = append(unregistered, "auth.PostRegisterHandler")
 	}
 
 	if o.PlayerPostRostersIDAddPlayerHandler == nil {
@@ -350,6 +359,11 @@ func (o *RosterAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/login"] = auth.NewPostLogin(o.context, o.AuthPostLoginHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/register"] = auth.NewPostRegister(o.context, o.AuthPostRegisterHandler)
 
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)

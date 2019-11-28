@@ -1,5 +1,7 @@
 package database
 
+import "errors"
+
 // NotFoundError not found in database
 type NotFoundError struct {
 	Err  error
@@ -23,3 +25,6 @@ func (e *NotFoundError) Error() string {
 
 // ErrNotFound not found
 var ErrNotFound *NotFoundError
+
+// ErrExists data already exists
+var ErrExists = errors.New("already exists")

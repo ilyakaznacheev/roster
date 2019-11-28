@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"strings"
 	"time"
 
 	"github.com/globalsign/mgo"
@@ -15,7 +16,10 @@ import (
 )
 
 const databaseName = "roster"
-const entityRoster = "roster"
+const (
+	entityRoster      = "roster"
+	entityCredentials = "credentials"
+)
 
 type MongoHandler struct {
 	db *mgo.Database
@@ -98,4 +102,21 @@ func (h *MongoHandler) PushPlayer(id int64, p models.Player) error {
 		return NewNotFoundError(err)
 	}
 	return err
+}
+
+func (h *MongoHandler) AddUser(c models.Credentials) error {
+	err := h.db.C(entityCredentials).Insert(c)
+	if e, ok := err.(*mgo.LastError); ok && (e.Code == 11000 || strings.Contains(e.Err, " E11000 ")) {
+		return ErrExists
+	}
+	return err
+}
+
+func (h *MongoHandler) GetUser(login string) (*models.Credentials, error) {
+	var c models.Credentials
+	err := h.db.C(entityCredentials).FindId(login).One(&c)
+	if err == mgo.ErrNotFound {
+		return nil, NewNotFoundError(err)
+	}
+	return &c, err
 }

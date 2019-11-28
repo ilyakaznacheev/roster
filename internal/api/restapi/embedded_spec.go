@@ -91,6 +91,65 @@ func init() {
         }
       }
     },
+    "/register": {
+      "post": {
+        "description": "Registers a new user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "auth"
+        ],
+        "summary": "Register",
+        "parameters": [
+          {
+            "description": "Credentials",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "created"
+          },
+          "409": {
+            "description": "conflict",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "examples": {
+              "application/json": {
+                "code": 409,
+                "message": {
+                  "text": "conflict"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "examples": {
+              "application/json": {
+                "code": 500,
+                "message": {
+                  "text": "internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/rosters": {
       "get": {
         "description": "Returns a full list of rosters on the server",
@@ -699,6 +758,65 @@ func init() {
                 "code": 403,
                 "message": {
                   "text": "forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "examples": {
+              "application/json": {
+                "code": 500,
+                "message": {
+                  "text": "internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "description": "Registers a new user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "auth"
+        ],
+        "summary": "Register",
+        "parameters": [
+          {
+            "description": "Credentials",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "created"
+          },
+          "409": {
+            "description": "conflict",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "examples": {
+              "application/json": {
+                "code": 409,
+                "message": {
+                  "text": "conflict"
                 }
               }
             }

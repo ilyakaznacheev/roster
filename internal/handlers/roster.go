@@ -17,8 +17,8 @@ import (
 
 const activePlayersNumber = 5
 
-// DatabaseService is a abstract database layer interface
-type DatabaseService interface {
+// DatabaseRosterService is a abstract database layer interface
+type DatabaseRosterService interface {
 	GetAllRosters() ([]dbModels.Roster, error)
 	GetRoster(id int64) (*dbModels.Roster, error)
 	PushPlayer(id int64, p dbModels.Player) error
@@ -33,12 +33,12 @@ func (g IDGeneratorFunc) Generate() int64 {
 
 // RosterHandler is a handler for roster API requests
 type RosterHandler struct {
-	DB    DatabaseService
+	DB    DatabaseRosterService
 	IDGen IDGeneratorFunc
 }
 
 // NewRosterHandler creates a new web API handler
-func NewRosterHandler(db DatabaseService) *RosterHandler {
+func NewRosterHandler(db DatabaseRosterService) *RosterHandler {
 	return &RosterHandler{
 		DB:    db,
 		IDGen: dbModels.GenerateID,

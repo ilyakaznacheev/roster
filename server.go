@@ -28,7 +28,7 @@ func Run(cfg config.Application) error {
 		return err
 	}
 	rh := handlers.NewRosterHandler(mgoDB)
-	ah := handlers.NewAuthHandler(cfg.Server.AuthKey)
+	ah := handlers.NewAuthHandler(cfg.Server.AuthKey, mgoDB)
 
 	api := operations.NewRosterAPI(swaggerSpec)
 
@@ -40,6 +40,7 @@ func Run(cfg config.Application) error {
 	api.PlayerPostRostersIDAddPlayerHandler = player.PostRostersIDAddPlayerHandlerFunc(rh.AddPayer)
 	api.PlayerPostRostersIDRearrangeHandler = player.PostRostersIDRearrangeHandlerFunc(rh.RearrangeRoster)
 	api.AuthPostLoginHandler = auth.PostLoginHandlerFunc(ah.HandleLogin)
+	api.AuthPostRegisterHandler = auth.PostRegisterHandlerFunc(ah.HandleRegistration)
 
 	api.BearerAuth = ah.Authenticate
 	api.Logger = log.Printf

@@ -135,6 +135,7 @@ API is tiny but powerful. For detailed information check [`swagger.yml`](/swagge
  
 Shortly you can do the following: 
  
+- [POST] `/api/register` - register a new API user
 - [POST] `/api/login` - get JWT token (you need it to make changes) 
 - [GET] `/api/rosters` - get a list of rosters 
 - [GET] `/api/rosters/{id}` - get certain roster 
