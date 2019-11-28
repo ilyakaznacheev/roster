@@ -1,4 +1,4 @@
-package handlers
+package handlers_test
 
 import (
 	"encoding/json"
@@ -15,12 +15,14 @@ import (
 	"github.com/ilyakaznacheev/roster/internal/api/restapi/operations/roster"
 	"github.com/ilyakaznacheev/roster/internal/database"
 	dbModels "github.com/ilyakaznacheev/roster/internal/database/models"
+	"github.com/ilyakaznacheev/roster/internal/handlers"
 	"github.com/ilyakaznacheev/roster/internal/handlers/mocks"
 )
 
 var (
 	ErrTestGeneric  = errors.New("test")
 	ErrTestNotFound = &database.NotFoundError{Text: "not found"}
+	ErrTestExists   = database.ErrExists
 )
 
 func TestRosterHandler_GetRosterAll(t *testing.T) {
@@ -82,10 +84,10 @@ func TestRosterHandler_GetRosterAll(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			db := new(mocks.DatabaseService)
+			db := new(mocks.DatabaseRosterService)
 			db.On("GetAllRosters").Return(tt.mockParams.res, tt.mockParams.err)
 
-			h := &RosterHandler{
+			h := &handlers.RosterHandler{
 				DB: db,
 			}
 
@@ -167,10 +169,10 @@ func TestRosterHandler_GetRosterOne(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			db := new(mocks.DatabaseService)
+			db := new(mocks.DatabaseRosterService)
 			db.On("GetRoster", int64(777)).Return(tt.mockParams.res, tt.mockParams.err)
 
-			h := &RosterHandler{
+			h := &handlers.RosterHandler{
 				DB: db,
 			}
 
@@ -252,10 +254,10 @@ func TestRosterHandler_GetRosterActive(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			db := new(mocks.DatabaseService)
+			db := new(mocks.DatabaseRosterService)
 			db.On("GetRoster", int64(777)).Return(tt.mockParams.res, tt.mockParams.err)
 
-			h := &RosterHandler{
+			h := &handlers.RosterHandler{
 				DB: db,
 			}
 
@@ -337,10 +339,10 @@ func TestRosterHandler_GetRosterBenched(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			db := new(mocks.DatabaseService)
+			db := new(mocks.DatabaseRosterService)
 			db.On("GetRoster", int64(777)).Return(tt.mockParams.res, tt.mockParams.err)
 
-			h := &RosterHandler{
+			h := &handlers.RosterHandler{
 				DB: db,
 			}
 
@@ -422,10 +424,10 @@ func TestRosterHandler_AddPayer(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			db := new(mocks.DatabaseService)
+			db := new(mocks.DatabaseRosterService)
 			db.On("PushPlayer", tt.mockParams.id, tt.mockParams.req).Return(tt.mockParams.err)
 
-			h := &RosterHandler{
+			h := &handlers.RosterHandler{
 				DB:    db,
 				IDGen: getIDGenFunc(12345),
 			}
@@ -772,11 +774,11 @@ func TestRosterHandler_RearrangeRoster(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			db := new(mocks.DatabaseService)
+			db := new(mocks.DatabaseRosterService)
 			db.On("GetRoster", tt.mockParams.id).Return(tt.mockParams.res, tt.mockParams.err1)
 			db.On("UpdateRoster", tt.mockParams.req).Return(tt.mockParams.err2)
 
-			h := &RosterHandler{
+			h := &handlers.RosterHandler{
 				DB: db,
 			}
 
@@ -796,7 +798,9 @@ func validateResponse(t *testing.T, r middleware.Responder, body string, code in
 	rc := httptest.NewRecorder()
 	r.WriteResponse(rc, &mockProducer{})
 
-	assert.JSONEqf(t, body, rc.Body.String(), "wrong response body: %s", rc.Body.String())
+	if body != "" {
+		assert.JSONEqf(t, body, rc.Body.String(), "wrong response body JSON: %s", rc.Body.String())
+	}
 	assert.Equal(t, code, rc.Code, "wrong response status code")
 
 }

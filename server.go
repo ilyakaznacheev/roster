@@ -45,6 +45,7 @@ func Run(cfg config.Application) error {
 	api.BearerAuth = ah.Authenticate
 	api.Logger = log.Printf
 
+	// the server handles graceful shutdown inside, no need for a specific handling
 	server := restapi.NewServer(api)
 	defer server.Shutdown()
 

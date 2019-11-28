@@ -6,7 +6,8 @@ generate/swagger:
 
 ## generate/mocks: Generate mocks
 generate/mocks:
-	@mockery -name="DatabaseService" -dir=internal/handlers -output=internal/handlers/mocks
+	@mockery -name="DatabaseRosterService" -dir=internal/handlers -output=internal/handlers/mocks
+	@mockery -name="DatabaseAuthService" -dir=internal/handlers -output=internal/handlers/mocks
 
 ## generate: Run full code generation
 generate: generate/swagger generate/mocks

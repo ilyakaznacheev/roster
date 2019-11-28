@@ -49,7 +49,7 @@ func (h *AuthHandler) HandleRegistration(params auth.PostRegisterParams) middlew
 		PassHash: hPass,
 	}
 	err = h.DB.AddUser(c)
-	if errors.As(err, &database.ErrExists) {
+	if errors.Is(err, database.ErrExists) {
 		return auth.NewPostRegisterConflict().WithPayload(
 			errorResp(http.StatusConflict, err.Error()))
 	} else if err != nil {

@@ -2,10 +2,7 @@
  
 The simple service for a roster management. 
  
-[![Go Report Card](https://goreportcard.com/badge/github.com/ilyakaznacheev/roster)](https://goreportcard.com/report/github.com/ilyakaznacheev/roster)  
-[![GoDoc](https://godoc.org/github.com/ilyakaznacheev/roster?status.svg)](https://godoc.org/github.com/ilyakaznacheev/roster) 
-[![Coverage Status](https://codecov.io/github/ilyakaznacheev/roster/coverage.svg?branch=master)](https://codecov.io/gh/ilyakaznacheev/roster) 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE) 
+[![Go Report Card](https://goreportcard.com/badge/github.com/ilyakaznacheev/roster)](https://goreportcard.com/report/github.com/ilyakaznacheev/roster) [![GoDoc](https://godoc.org/github.com/ilyakaznacheev/roster?status.svg)](https://godoc.org/github.com/ilyakaznacheev/roster) [![Coverage Status](https://codecov.io/github/ilyakaznacheev/roster/coverage.svg?branch=master)](https://codecov.io/gh/ilyakaznacheev/roster) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE) 
  
 ## Contents 
  
