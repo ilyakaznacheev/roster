@@ -356,12 +356,14 @@ func TestRosterHandler_AddPayer(t *testing.T) {
 		FirstName: strToPtr("test1"),
 		LastName:  strToPtr("test11"),
 		Alias:     strToPtr("ttt111"),
+		Role:      strToPtr("rifler"),
 	}
 	pn := dbModels.Player{
 		ID:        12345,
 		FirstName: "test1",
 		LastName:  "test11",
 		Alias:     "ttt111",
+		Role:      "rifler",
 	}
 
 	type mockParams struct {
@@ -389,7 +391,7 @@ func TestRosterHandler_AddPayer(t *testing.T) {
 				err: nil,
 			},
 			wantStatus: 201,
-			wantBody:   `{"alias":"ttt111","first_name":"test1","id":12345,"last_name":"test11"}`,
+			wantBody:   `{"alias":"ttt111","first_name":"test1","id":12345,"last_name":"test11", "role":"rifler"}`,
 		},
 
 		{
