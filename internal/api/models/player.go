@@ -32,6 +32,9 @@ type Player struct {
 	// last name
 	// Required: true
 	LastName *string `json:"last_name"`
+
+	// role
+	Role string `json:"role,omitempty"`
 }
 
 // Validate validates this player

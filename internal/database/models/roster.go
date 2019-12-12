@@ -21,10 +21,11 @@ type RosterPlayers struct {
 
 // Player is a single player inside a roster
 type Player struct {
-	ID        int64  `bson:"id"`
-	FirstName string `bson:"first_name"`
-	LastName  string `bson:"last_name"`
-	Alias     string `bson:"alias"`
+	ID        int64      `bson:"id"`
+	FirstName string     `bson:"first_name"`
+	LastName  string     `bson:"last_name"`
+	Alias     string     `bson:"alias"`
+	Role      PlayerRole `bson:"role"`
 }
 
 var maxID = int(math.Pow10(18))
@@ -33,3 +34,13 @@ var maxID = int(math.Pow10(18))
 func GenerateID() int64 {
 	return int64(rand.Intn(maxID))
 }
+
+// PlayerRole is a player role
+type PlayerRole string
+
+const (
+	RoleRifler  PlayerRole = "rifler"
+	RoleIgl     PlayerRole = "igl"
+	RoleSupport PlayerRole = "support"
+	RoleAwper   PlayerRole = "awper"
+)

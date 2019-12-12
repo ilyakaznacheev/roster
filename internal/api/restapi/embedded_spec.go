@@ -609,6 +609,9 @@ func init() {
         },
         "last_name": {
           "type": "string"
+        },
+        "role": {
+          "type": "string"
         }
       }
     },
@@ -617,7 +620,8 @@ func init() {
       "required": [
         "first_name",
         "last_name",
-        "alias"
+        "alias",
+        "role"
       ],
       "properties": {
         "alias": {
@@ -628,6 +632,15 @@ func init() {
         },
         "last_name": {
           "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "rifler",
+            "igl",
+            "support",
+            "awper"
+          ]
         }
       }
     },
@@ -1297,6 +1310,9 @@ func init() {
         },
         "last_name": {
           "type": "string"
+        },
+        "role": {
+          "type": "string"
         }
       }
     },
@@ -1305,7 +1321,8 @@ func init() {
       "required": [
         "first_name",
         "last_name",
-        "alias"
+        "alias",
+        "role"
       ],
       "properties": {
         "alias": {
@@ -1316,6 +1333,15 @@ func init() {
         },
         "last_name": {
           "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "rifler",
+            "igl",
+            "support",
+            "awper"
+          ]
         }
       }
     },

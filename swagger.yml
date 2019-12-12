@@ -349,6 +349,8 @@ definitions:
         type: string
       alias:
         type: string
+      role:
+        type: string
 
   PlayerRequest:
     type: object
@@ -356,6 +358,7 @@ definitions:
       - first_name
       - last_name
       - alias
+      - role
     properties:
       first_name:
         type: string
@@ -363,6 +366,9 @@ definitions:
         type: string
       alias:
         type: string
+      role:
+        type: string
+        enum: [rifler, igl, support, awper]
 
   RearrangeRequest:
     type: object

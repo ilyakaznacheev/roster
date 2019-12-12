@@ -70,6 +70,7 @@ func (h *RosterHandler) GetRosterAll(params roster.GetRostersParams) middleware.
 				FirstName: &r.Players.Active[idx].FirstName,
 				LastName:  &r.Players.Active[idx].LastName,
 				Alias:     &r.Players.Active[idx].Alias,
+				Role:      string(r.Players.Active[idx].Role),
 			})
 		}
 
@@ -112,6 +113,7 @@ func (h *RosterHandler) GetRosterOne(params roster.GetRostersIDParams) middlewar
 			FirstName: &r.Players.Active[idx].FirstName,
 			LastName:  &r.Players.Active[idx].LastName,
 			Alias:     &r.Players.Active[idx].Alias,
+			Role:      string(r.Players.Active[idx].Role),
 		})
 	}
 
@@ -121,6 +123,7 @@ func (h *RosterHandler) GetRosterOne(params roster.GetRostersIDParams) middlewar
 			FirstName: &r.Players.Benched[idx].FirstName,
 			LastName:  &r.Players.Benched[idx].LastName,
 			Alias:     &r.Players.Benched[idx].Alias,
+			Role:      string(r.Players.Benched[idx].Role),
 		})
 	}
 
@@ -150,6 +153,7 @@ func (h *RosterHandler) GetRosterActive(params roster.GetRostersIDActiveParams) 
 			FirstName: &r.Players.Active[idx].FirstName,
 			LastName:  &r.Players.Active[idx].LastName,
 			Alias:     &r.Players.Active[idx].Alias,
+			Role:      string(r.Players.Active[idx].Role),
 		})
 	}
 
@@ -179,6 +183,7 @@ func (h *RosterHandler) GetRosterBenched(params roster.GetRostersIDBenchedParams
 			FirstName: &r.Players.Benched[idx].FirstName,
 			LastName:  &r.Players.Benched[idx].LastName,
 			Alias:     &r.Players.Benched[idx].Alias,
+			Role:      string(r.Players.Benched[idx].Role),
 		})
 	}
 
@@ -192,6 +197,7 @@ func (h *RosterHandler) AddPayer(params player.PostRostersIDAddPlayerParams, _ i
 		FirstName: *params.Body.FirstName,
 		LastName:  *params.Body.LastName,
 		Alias:     *params.Body.Alias,
+		Role:      dbModels.PlayerRole(*params.Body.Role),
 	}
 
 	err := h.DB.PushPlayer(params.ID, p)
@@ -208,6 +214,7 @@ func (h *RosterHandler) AddPayer(params player.PostRostersIDAddPlayerParams, _ i
 		FirstName: &p.FirstName,
 		LastName:  &p.LastName,
 		Alias:     &p.Alias,
+		Role:      string(p.Role),
 	}
 
 	return player.NewPostRostersIDAddPlayerCreated().WithPayload(respData)
@@ -316,6 +323,7 @@ func (h *RosterHandler) RearrangeRoster(params player.PostRostersIDRearrangePara
 			FirstName: &r.Players.Active[idx].FirstName,
 			LastName:  &r.Players.Active[idx].LastName,
 			Alias:     &r.Players.Active[idx].Alias,
+			Role:      string(r.Players.Active[idx].Role),
 		})
 	}
 
@@ -325,6 +333,7 @@ func (h *RosterHandler) RearrangeRoster(params player.PostRostersIDRearrangePara
 			FirstName: &r.Players.Benched[idx].FirstName,
 			LastName:  &r.Players.Benched[idx].LastName,
 			Alias:     &r.Players.Benched[idx].Alias,
+			Role:      string(r.Players.Benched[idx].Role),
 		})
 	}
 

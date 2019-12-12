@@ -6,6 +6,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"encoding/json"
+
 	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/go-openapi/errors"
@@ -28,6 +30,11 @@ type PlayerRequest struct {
 	// last name
 	// Required: true
 	LastName *string `json:"last_name"`
+
+	// role
+	// Required: true
+	// Enum: [rifler igl support awper]
+	Role *string `json:"role"`
 }
 
 // Validate validates this player request
@@ -43,6 +50,10 @@ func (m *PlayerRequest) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateLastName(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateRole(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -73,6 +84,55 @@ func (m *PlayerRequest) validateFirstName(formats strfmt.Registry) error {
 func (m *PlayerRequest) validateLastName(formats strfmt.Registry) error {
 
 	if err := validate.Required("last_name", "body", m.LastName); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+var playerRequestTypeRolePropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["rifler","igl","support","awper"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		playerRequestTypeRolePropEnum = append(playerRequestTypeRolePropEnum, v)
+	}
+}
+
+const (
+
+	// PlayerRequestRoleRifler captures enum value "rifler"
+	PlayerRequestRoleRifler string = "rifler"
+
+	// PlayerRequestRoleIgl captures enum value "igl"
+	PlayerRequestRoleIgl string = "igl"
+
+	// PlayerRequestRoleSupport captures enum value "support"
+	PlayerRequestRoleSupport string = "support"
+
+	// PlayerRequestRoleAwper captures enum value "awper"
+	PlayerRequestRoleAwper string = "awper"
+)
+
+// prop value enum
+func (m *PlayerRequest) validateRoleEnum(path, location string, value string) error {
+	if err := validate.Enum(path, location, value, playerRequestTypeRolePropEnum); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *PlayerRequest) validateRole(formats strfmt.Registry) error {
+
+	if err := validate.Required("role", "body", m.Role); err != nil {
+		return err
+	}
+
+	// value enum
+	if err := m.validateRoleEnum("role", "body", *m.Role); err != nil {
 		return err
 	}
 
